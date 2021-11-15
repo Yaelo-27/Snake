@@ -7,20 +7,24 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btmempezar"
         android:layout_width="154dp"
         android:layout_height="99dp"
         android:backgroundTint="#38883B"
+        android:fontFamily="casual"
         android:text="Empezar"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/snakemain"
         app:layout_constraintVertical_bias="0.211" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/snakemain"
         android:layout_width="271dp"
         android:layout_height="94dp"
         android:fontFamily="casual"
