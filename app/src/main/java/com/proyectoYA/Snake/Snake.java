@@ -25,6 +25,7 @@ public class Snake extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_snake);
     }
+
     public static class SnakeView extends View {
         private GestureDetector gestos;
         private Direccion direccion;
@@ -33,14 +34,17 @@ public class Snake extends AppCompatActivity {
         private Runnable tiempo;
         private int columna, fila; // columna y fila donde se encuentra la cabeza de la vibora
         private int colfruta, filfruta; // columna y fila donde se encuentra la fruta
-        private boolean activo = true; // disponemos en false cuando finaliza el juego
+        private boolean activo = true; // activador del juego true=empieza, false=termina
         private int crecimiento = 0; // indica la cantidad de cuadros que debe crecer la vibora
         private int l_cuadrado;
         private int cuadrosAncho=30,cuadrosAlto;//cuadrosAlto se calcula segun la altura del dispositivo
+        private int contador=0;
 
+        //Método enumerado de dirección hacía donde se va a mover la culebra
         private enum Direccion {
             IZQUIERDA, DERECHA, SUBE, BAJA
         };
+
 
         class Punto {
             int x, y;
@@ -50,10 +54,13 @@ public class Snake extends AppCompatActivity {
                 this.y = y;
             }
         }
+
+        //constructor de la vista
         public SnakeView(Context context, @Nullable AttributeSet attrs) {
             super(context, attrs);
             gestos=new GestureDetector(this.getContext(),new EscuchaGestos());
             tiempo=new Runnable() {
+                //Método sobreescrito run que dependiendo de la dirección hace que se mueva hacía una u otra
                 @Override
                 public void run() {
                     switch (direccion) {
@@ -90,10 +97,10 @@ public class Snake extends AppCompatActivity {
                         manejador.postDelayed(this,100);
                 }
             };
+
             iniciar();
-
         }
-
+        //Método que inicia el juego
         public void iniciar()
         {
             //En esta array se guarda a la serpiente
@@ -129,7 +136,8 @@ public class Snake extends AppCompatActivity {
         private boolean verificarComeFruta() {
             if (columna == colfruta && fila == filfruta) {
                 generarCoordenadaFruta();
-                crecimiento = 10;
+                crecimiento = 5;
+                contador = 100;
                 return true;
             } else
                 return false;
@@ -167,7 +175,7 @@ public class Snake extends AppCompatActivity {
             gestos.onTouchEvent(event);
             return true;
         }
-
+        //Clase que detecta los movientos del dedo
         class EscuchaGestos extends GestureDetector.SimpleOnGestureListener {
 
             @Override
@@ -190,19 +198,20 @@ public class Snake extends AppCompatActivity {
                 }
                 return true;
             }
-
+            //Método que hereda de gesturedetector
             @Override
             public boolean onDoubleTap(MotionEvent e) {
                 iniciar();
                 return true;
             }
         }
-
+        //Dibuja los componenetes
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
             canvas.drawRGB(163,188,182);
             Paint pincel1=new Paint();
+            //Dibuja el tablero
             pincel1.setColor(Color.WHITE);
             for(int c=0;c<=cuadrosAncho+1;c++)
                 canvas.drawLine(c* l_cuadrado,0,
@@ -210,19 +219,17 @@ public class Snake extends AppCompatActivity {
             for(int f=0;f<=cuadrosAlto;f++)
                 canvas.drawLine(0,f*l_cuadrado,
                         cuadrosAncho* l_cuadrado +cuadrosAncho,f*l_cuadrado,pincel1);
-
+            //Dibuja la serpiente y sus partes
             pincel1.setColor(Color.rgb(57, 96, 61));
             for (Punto punto : lista) {
                 canvas.drawRect(punto.x * l_cuadrado, punto.y * l_cuadrado,
                         punto.x * l_cuadrado + l_cuadrado -3,  punto.y * l_cuadrado+l_cuadrado-3,pincel1);
             }
             // dibujar fruta
-            pincel1.setColor(Color.BLUE);
+            pincel1.setColor(Color.RED);
             canvas.drawRect(colfruta* l_cuadrado, filfruta*l_cuadrado,
                     colfruta* l_cuadrado + l_cuadrado, filfruta*l_cuadrado+l_cuadrado,pincel1);
         }
-
-
     }
 
 
